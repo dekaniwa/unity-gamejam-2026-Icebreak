@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class player:MonoBehaviour
 {
-    public float MoveSpeed = 0.01f;
+    public float MoveSpeed = 5f;
+    public float JumpPower = 6.0f;
+
+
+    Rigidbody m_rigidBody;
     void Start()
     {
-
+    //自分にアタッチされているRigidBodyを取得する
+        m_rigidBody = GetComponent<Rigidbody>();
     }
     void Update()
     {
@@ -34,6 +39,18 @@ public class player:MonoBehaviour
         }
         // 移動させる
         transform.position += move;
+        // 回転
+        if (move.sqrMagnitude > 0.0f)
+        {
+            transform.rotation = Quaternion.LookRotation(move.normalized);
+        }
+        // ジャンプ
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_rigidBody.AddForce(new Vector3(0.0f, JumpPower, 0.0f),
+                ForceMode.VelocityChange);
+        }
+
     }
 
 }
