@@ -1,30 +1,129 @@
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+
+//public class player:MonoBehaviour
+//{
+//    public float MoveSpeed = 5f;
+//    public float JumpPower = 6.0f;
+//    Animator m_playerAnimator; //アニメーション
+
+//    bool m_moveFlag;
+
+
+//    Rigidbody m_rigidBody;
+//    void Start()
+//    {
+//    //自分にアタッチされているRigidBodyを取得する
+//        m_rigidBody = GetComponent<Rigidbody>();
+//    //自分にアタッチされているAnimatorを取得する
+//        m_playerAnimator = GetComponent<Animator>();
+//    }
+//    void Update()
+//    {
+//        //移動速度の初期化
+//        Vector3 move = Vector3.zero;
+
+//        //前後移動
+//        if(Input.GetKey(KeyCode.W))
+//        {
+//            move.z += MoveSpeed;
+//        }
+//        if(Input.GetKey(KeyCode.S))
+//        {
+//            move.z += -MoveSpeed;
+//        }
+//        // 左右移動
+//        if (Input.GetKey(KeyCode.D))
+//        {
+//            move.x += MoveSpeed;
+//        }
+//        if (Input.GetKey(KeyCode.A))
+//        {
+//            move.x += -MoveSpeed;
+//        }
+//        // 移動させる
+//        transform.position += move;
+
+//        // 移動フラグの更新
+//        if (move.sqrMagnitude == 0.0f)
+//        {
+//            m_moveFlag = false;
+//        }
+//        else
+//        {
+//            m_moveFlag = true;
+//        }
+
+//        // 回転
+//        if (move.sqrMagnitude > 0.0f)
+//        {
+//            transform.rotation = Quaternion.LookRotation(move.normalized);
+//        }
+//        // ジャンプ
+//        if (Input.GetKeyDown(KeyCode.Space))
+//        {
+//            m_rigidBody.AddForce(new Vector3(0.0f, JumpPower, 0.0f),
+//                ForceMode.VelocityChange);
+//        }
+
+//    }
+
+//    private void Animation()
+//    {
+//        // 移動フラグ
+//        m_playerAnimator.SetBool("MoveFlag", m_moveFlag);
+//    }
+//}
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player:MonoBehaviour
+
+public class Player : MonoBehaviour
 {
-    public float MoveSpeed = 5f;
+    public float MoveSpeed = 0.01f;
     public float JumpPower = 6.0f;
 
 
     Rigidbody m_rigidBody;
+    Animator m_playerAnimator;
+
+      bool m_moveFlag, m_jumpFlag, m_airFlag;
+
+
     void Start()
     {
-    //自分にアタッチされているRigidBodyを取得する
+        // 自分にアタッチされているRigidBodyを取得する
         m_rigidBody = GetComponent<Rigidbody>();
+        // 自分にアタッチされているAnimatorを取得する
+        m_playerAnimator = GetComponent<Animator>();
     }
+
+
     void Update()
     {
-        //移動速度の初期化
+        // 移動やジャンプ
+        Action();
+
+        // アニメーション
+        Animation();
+    }
+
+
+    private void Action()
+    {
+        // 移動速度を初期化
         Vector3 move = Vector3.zero;
 
-        //前後移動
-        if(Input.GetKey(KeyCode.W))
+
+        // 前後移動
+        if (Input.GetKey(KeyCode.W))
         {
             move.z += MoveSpeed;
         }
-        if(Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
             move.z += -MoveSpeed;
         }
@@ -37,20 +136,34 @@ public class player:MonoBehaviour
         {
             move.x += -MoveSpeed;
         }
+
         // 移動させる
         transform.position += move;
+
+        // 移動フラグの更新
+        if (move.sqrMagnitude == 0.0f)
+        {
+            m_moveFlag = false;
+        }
+        else
+        {
+            m_moveFlag = true;
+        }
+
+
         // 回転
         if (move.sqrMagnitude > 0.0f)
         {
             transform.rotation = Quaternion.LookRotation(move.normalized);
         }
-        // ジャンプ
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            m_rigidBody.AddForce(new Vector3(0.0f, JumpPower, 0.0f),
-                ForceMode.VelocityChange);
-        }
-
     }
+
+
+    private void Animation()
+    {
+        // 移動フラグ
+        m_playerAnimator.SetBool("MoveFlag", m_moveFlag);
+    }
+
 
 }
