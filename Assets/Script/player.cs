@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
          {  
             m_rigidBody.AddForce(new Vector3(0.0f, JumpPower, 0.0f),
             ForceMode.VelocityChange);
+            m_jumpFlag = true;
          }
     }
 
@@ -93,7 +94,20 @@ public class Player : MonoBehaviour
     {
         // 移動フラグ
         m_playerAnimator.SetBool("MoveFlag", m_moveFlag);
+
+        // ジャンプフラグ
+        if (m_jumpFlag && m_airFlag == false &&
+            Ground_Checker.GetIsGround() == false)
+        {
+            m_airFlag = true;
+            m_playerAnimator.SetBool("JumpFlag", true);
+        }
+        if (m_jumpFlag && m_airFlag &&
+            Ground_Checker.GetIsGround())
+        {
+            m_airFlag = false;
+            m_jumpFlag = false;
+            m_playerAnimator.SetBool("JumpFlag", false);
+        }
     }
-
-
 }
