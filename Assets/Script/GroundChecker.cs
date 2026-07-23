@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundChec : MonoBehaviour
+public class GroundChecker : MonoBehaviour
 {
     // 接地しているかを格納する変数
     bool m_isGround;

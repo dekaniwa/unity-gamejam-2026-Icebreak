@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     Animator m_playerAnimator;
 
       bool m_moveFlag, m_jumpFlag, m_airFlag;
-
-
+    // 接地判定用スクリプト
+    public GroundChecker Ground_Checker;
     void Start()
     {
         // 自分にアタッチされているRigidBodyを取得する
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(move.normalized);
         }
         // ジャンプ
-         if (Input.GetKeyDown(KeyCode.Space))
+         if (Input.GetKeyDown(KeyCode.Space) && Ground_Checker.GetIsGround())
          {  
             m_rigidBody.AddForce(new Vector3(0.0f, JumpPower, 0.0f),
             ForceMode.VelocityChange);
