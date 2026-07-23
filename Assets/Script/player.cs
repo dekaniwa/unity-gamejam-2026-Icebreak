@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
 
     Rigidbody m_rigidBody;
     Animator m_playerAnimator;
-
-      bool m_moveFlag, m_jumpFlag, m_airFlag;
+    GameObject m_mainCamera;
+    bool m_moveFlag, m_jumpFlag, m_airFlag;
     // 接地判定用スクリプト
     public GroundChecker Ground_Checker;
     void Start()
@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
         m_rigidBody = GetComponent<Rigidbody>();
         // 自分にアタッチされているAnimatorを取得する
         m_playerAnimator = GetComponent<Animator>();
+        // メインカメラのゲームオブジェクトを取得する
+        m_mainCamera = Camera.main.gameObject;
     }
 
 
@@ -60,12 +62,22 @@ public class Player : MonoBehaviour
         {
             move.x += -MoveSpeed;
         }
+        // カメラを考慮した移動
+        Vector3 PlayerMove = Vector3.zero;
+
+        Vector3 forward = m_mainCamera.transform.forward;
+        Vector3 right = m_mainCamera.transform.right;
+        forward.y = 0.0f;
+        right.y = 0.0f;
+        right *= move.x;
+        forward *= move.z;
+        // 移動速度に上記で計算したベクトルを加算する
+        PlayerMove += right + forward;
 
         // 移動させる
-        transform.position += move;
-
+        transform.position += PlayerMove * Time.deltaTime;
         // 移動フラグの更新
-        if (move.sqrMagnitude == 0.0f)
+        if (PlayerMove.sqrMagnitude == 0.0f)
         {
             m_moveFlag = false;
         }
@@ -76,9 +88,9 @@ public class Player : MonoBehaviour
 
 
         // 回転
-        if (move.sqrMagnitude > 0.0f)
+        if (PlayerMove.sqrMagnitude > 0.0f)
         {
-            transform.rotation = Quaternion.LookRotation(move.normalized);
+            transform.rotation = Quaternion.LookRotation(PlayerMove.normalized);
         }
         // ジャンプ
          if (Input.GetKeyDown(KeyCode.Space) && Ground_Checker.GetIsGround())
