@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Apple : MonoBehaviour
+public class Banana : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,15 +15,12 @@ public class Apple : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-       
+
         if (other.CompareTag("Player"))
         {
-           Inventory.Instance.AddApple();
+            Inventory.Instance.AddBanana();
 
             Destroy(gameObject);
         }
     }
-    
-    
 }
-//

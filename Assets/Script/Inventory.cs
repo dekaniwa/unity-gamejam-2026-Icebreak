@@ -6,8 +6,10 @@ public class Inventory : MonoBehaviour
         public static Inventory Instance;
 
         public int apple;
-        public int mushroom;
+        public int lemon;
         public int banana;
+    public int carrot;
+    public int orange;
 
         void Awake()
         {
@@ -21,10 +23,26 @@ public class Inventory : MonoBehaviour
 
         public void AddApple()
         {
-        Debug.Log("りんご：" + apple);
         apple++;
         }
-    
+    public void AddLemon()
+    {
+       
+        lemon++;
+    }
+    public void AddBanana()
+    {
+        banana++;
+    }
+    public void AddCarrot()
+    {
+        carrot++;
+    }
+    public void AddOrange()
+    {
+        orange++;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
