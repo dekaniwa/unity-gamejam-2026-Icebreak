@@ -15,11 +15,14 @@ public class Apple : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("当たった！");
         if (other.CompareTag("Player"))
         {
-            Inventory.Instance.AddApple();
+           Inventory.Instance.AddApple();
 
             Destroy(gameObject);
         }
     }
+    
+    
 }
